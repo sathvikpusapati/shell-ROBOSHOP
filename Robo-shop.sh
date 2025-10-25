@@ -4,7 +4,7 @@ AMI_ID=ami-09c813fb71547fc4f
 
 SG_ID=sg-081c9c8b0bc93e267
 
-DNS=thanunenu.space
+DNS="thanunenu.space"
 
 HOSTZONE_ID=Z0965400RHMI5B71YF0G
 
@@ -31,7 +31,7 @@ for instance in $@
         {
             "Comment": "Testing creating a record set"
             ,"Changes": [{
-            "Action"              : "updating record set"
+            "Action"              : "UPSERT"
             ,"ResourceRecordSet"  : {
                 "Name"              : '" $RECORD "'
                 ,"Type"             : "A"
