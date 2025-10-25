@@ -37,7 +37,7 @@ for instance in $@
                 ,"Type"             : "A"
                 ,"TTL"              : 1
                 ,"ResourceRecords"  : [{
-                    "Value"         : "' $IP '"
+                    "Value"         :"'$IP'"
                 }]
             }
             }]
