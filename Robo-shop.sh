@@ -15,10 +15,10 @@ for instance in $@
 
         if [ $instance != "frontend" ]; then 
             IP=$( aws ec2 describe-instances --instance-ids $INSTANCE_ID  --query "Reservations[0].Instances[0].PrivateIpAddress" --output text)
-            RECORD=$instance.$DNS
+            RECORD="$instance.$DNS"
         else
             IP=$( aws ec2 describe-instances --instance-ids $INSTANCE_ID  --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
-            RECORD=$DNS 
+            RECORD="$DNS"
         fi
 
         echo "$instance : $IP"
