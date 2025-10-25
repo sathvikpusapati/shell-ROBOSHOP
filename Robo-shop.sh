@@ -33,7 +33,7 @@ for instance in $@
             ,"Changes": [{
             "Action"              : "UPSERT"
             ,"ResourceRecordSet"  : {
-                "Name"              : "' $RECORD '"
+                "Name"              :"'$RECORD'"
                 ,"Type"             : "A"
                 ,"TTL"              : 1
                 ,"ResourceRecords"  : [{
