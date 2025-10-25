@@ -4,6 +4,10 @@ AMI_ID=ami-09c813fb71547fc4f
 
 SG_ID=sg-081c9c8b0bc93e267
 
+DNS=thanunenu.space
+
+HOSTZONE_ID=Z0965400RHMI5B71YF0G
+
 for instance in $@
 
     do
@@ -11,11 +15,34 @@ for instance in $@
 
         if [ $instance != "frontend" ]; then 
             IP=$( aws ec2 describe-instances --instance-ids $INSTANCE_ID  --query "Reservations[0].Instances[0].PrivateIpAddress" --output text)
+            RECORD=$instance.$DNS
         else
             IP=$( aws ec2 describe-instances --instance-ids $INSTANCE_ID  --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
+            RECORD=$DNS 
         fi
 
         echo "$instance : $IP"
+
+        # Creates route 53 records based on env name
+
+        aws route53 change-resource-record-sets \
+        --hosted-zone-id $HOSTZONE_ID \
+        --change-batch '
+        {
+            "Comment": "Testing creating a record set"
+            ,"Changes": [{
+            "Action"              : "updating record set"
+            ,"ResourceRecordSet"  : {
+                "Name"              : '" $RECORD "'
+                ,"Type"             : "A"
+                ,"TTL"              : 1
+                ,"ResourceRecords"  : [{
+                    "Value"         : '" $IP "'
+                }]
+            }
+            }]
+        }
+        '
 
     done
 
