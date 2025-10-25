@@ -29,15 +29,15 @@ for instance in $@
         --hosted-zone-id $HOSTZONE_ID \
         --change-batch '
         {
-            "Comment": "Testing creating a record set"
+            "Comment": "updating record set"
             ,"Changes": [{
-            "Action"              : "CREATE"
+            "Action"              : "UPSERT"
             ,"ResourceRecordSet"  : {
-                "Name"              : '" $RECORD "'
+                "Name"              : "' $RECORD '"
                 ,"Type"             : "A"
                 ,"TTL"              : 1
                 ,"ResourceRecords"  : [{
-                    "Value"         : '" $IP "'
+                    "Value"         : "' $IP '"
                 }]
             }
             }]
