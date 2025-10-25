@@ -31,7 +31,7 @@ for instance in $@
         {
             "Comment": "Testing creating a record set"
             ,"Changes": [{
-            "Action"              : "UPSERT"
+            "Action"              : "CREATE"
             ,"ResourceRecordSet"  : {
                 "Name"              : '" $RECORD "'
                 ,"Type"             : "A"
