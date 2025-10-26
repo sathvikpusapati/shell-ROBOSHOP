@@ -32,55 +32,55 @@ VALIDATE()
     fi    
 }
 
-dnf module disable nodejs -y 
+dnf module disable nodejs -y &>> $logfile
 VALIDATE $? "DISABLING NODEJS"
 
-dnf module enable nodejs:20 -y 
+dnf module enable nodejs:20 -y &>> $logfile
 VALIDATE $? "ENABLING NODEJS 20"
 
-dnf install nodejs -y
+dnf install nodejs -y &>> $logfile
 VALIDATE $? "INSTALLING NODEJS"
 
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $logfile
 VALIDATE $? "adding system user for roboshop"
 
-mkdir /app
+mkdir /app &>> $logfile
 VALIDATE $? "CREATING APP DIRECTORY"
 
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
 VALIDATE $? "downloading catalogue application"
 
 
-cd /app
+cd /app &>> $logfile
 VALIDATE $? "CHANGING DIRECTORY"
 
-unzip /tmp/catalogue.zip
+unzip /tmp/catalogue.zip &>> $logfile
 VALIDATE $? "UNZIPPING DOWNLOADED CODE"
 
-npm install
+npm install &>> $logfile
 VALIDATE $? "installing dependencies"
 
-cp catalogue.service /etc/systemd/system/catalogue.service
+cp catalogue.service /etc/systemd/system/catalogue.service &>> $logfile
 VALIDATE $? "copying catalogue service file"
 
-systemctl daemon-reload
+systemctl daemon-reload &>> $logfile
 VALIDATE $? "reloading "
 
-systemctl enable catalogue
+systemctl enable catalogue &>> $logfile
 
-systemctl start catalogue
+systemctl start catalogue &>> $logfile
 VALIDATE $? "starting catalogue"
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo
+cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $logfile
 VALIDATE $? "copying mongo repo file"
 
-dnf install mongodb-mongosh -y
+dnf install mongodb-mongosh -y &>> $logfile
 VALIDATE $? "installing mongodb client"
 
-mongosh --host $MONGODB_IP </app/db/master-data.js
+mongosh --host $MONGODB_IP </app/db/master-data.js &>> $logfile
 VALIDATE $? "loading master data into mongodb"
 
-systemctl restart catalogue 
+systemctl restart catalogue  &>> $logfile
 VALIDATE $? "restarting catalogue"
 
 
