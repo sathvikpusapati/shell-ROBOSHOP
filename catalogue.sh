@@ -11,6 +11,8 @@ log_NAME=$( echo $0 | cut -d "." -f1)
 
 MOGODB_IP=mongodb.thanunenu.space
 
+SCRIPT_DIR=/home/ec2-user/shell-ROBOSHOP
+
 logfile="$FOLDER/$log_NAME.log"
 
 sudo mkdir -p $FOLDER
@@ -41,10 +43,17 @@ VALIDATE $? "ENABLING NODEJS 20"
 dnf install nodejs -y &>> $logfile
 VALIDATE $? "INSTALLING NODEJS"
 
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $logfile
-VALIDATE $? "adding system user for roboshop"
+id roboshop &>> $logfile
+if [ $? -ne 0 ]; then
 
-mkdir /app &>> $logfile
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $logfile
+    VALIDATE $? "adding system user for roboshop"
+else
+
+    echo -e "SYSTEM USER ALRAEDY CREATED $Y SKIPPING....$N"
+fi
+
+mkdir -p /app &>> $logfile
 VALIDATE $? "CREATING APP DIRECTORY"
 
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
@@ -54,13 +63,16 @@ VALIDATE $? "downloading catalogue application"
 cd /app &>> $logfile
 VALIDATE $? "CHANGING DIRECTORY"
 
+rm -rf /app/*  &>> $logfile
+VALIDATE $? "removing existing code"
+
 unzip /tmp/catalogue.zip &>> $logfile
 VALIDATE $? "UNZIPPING DOWNLOADED CODE"
 
 npm install &>> $logfile
 VALIDATE $? "installing dependencies"
 
-cp catalogue.service /etc/systemd/system/catalogue.service &>> $logfile
+cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service &>> $logfile
 VALIDATE $? "copying catalogue service file"
 
 systemctl daemon-reload &>> $logfile
