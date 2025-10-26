@@ -9,7 +9,7 @@ FOLDER="/var/log/SHELL-ROBOSHOP"
 
 log_NAME=$( echo $0 | cut -d "." -f1)
 
-MOGODB_IP="mongodb.thanunenu.space"
+MONGODB_IP="mongodb.thanunenu.space"
 
 SCRIPT_DIR=/home/ec2-user/shell-ROBOSHOP
 
