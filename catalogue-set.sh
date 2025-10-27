@@ -38,11 +38,11 @@ dnf install nodejs -y &>> $logfile
 
 #id roboshop &>> $logfile
 if  id roboshop &>> "$logfile"; then
-
-    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $logfile
-else
-
     echo -e "SYSTEM USER ALRAEDY CREATED $Y SKIPPING....$N"
+
+else
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $logfile
+
 fi
 
 mkdir -p /app &>> $logfile
