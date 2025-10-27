@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail 
 
-trap ' echo"there is an error in line number : $LINENO and the command is $BASH_COMMAND"' ERR
+trap 'echo "there is an error in line number : $LINENO and the command is $BASH_COMMAND"' ERR
 
 R="\e[31m"
 G="\e[32m"
