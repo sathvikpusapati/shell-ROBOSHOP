@@ -36,8 +36,8 @@ dnf module enable nodejs:20 -y &>> $logfile
 
 dnf install nodejs -y &>> $logfile
 
-id roboshop &>> $logfile
-if [ $? -ne 0 ]; then
+#id roboshop &>> $logfile
+if  id roboshop &>> "$logfile"; then
 
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $logfile
 else
