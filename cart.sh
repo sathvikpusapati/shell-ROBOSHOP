@@ -9,7 +9,7 @@ FOLDER="/var/log/SHELL-ROBOSHOP"
 
 log_NAME=$( echo $0 | cut -d "." -f1)
 
-MONGODB_IP="mongodb.thanunenu.space"
+START_TIME=$( date +%S)
 
 SCRIPT_DIR=/home/ec2-user/shell-ROBOSHOP
 
@@ -83,15 +83,11 @@ systemctl enable cart &>> $logfile
 systemctl start cart &>> $logfile
 VALIDATE $? "starting cart"
 
-cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo &>> $logfile
-VALIDATE $? "copying mongo repo file"
+END_TIME=$(date +%S)
 
-dnf install mongodb-mongosh -y &>> $logfile
-VALIDATE $? "installing mongodb client"
+TOTAL_TIME=$(( $START_TIME-$END_TIME ))
 
-
-systemctl restart cart  &>> $logfile
-VALIDATE $? "restarting cart"
+echo -e "SCRIPT EXECUTED IN $Y $TOTAL_TIME SECONDS $N" 
 
 
 
