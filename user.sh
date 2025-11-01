@@ -42,15 +42,40 @@ VALIDATE $? "ENABLING  REDIS 20"
 dnf install redis -y &>> $logfile
 VALIDATE $? "INSTALLING REDIS"
 
-sed -i -e 's/127.0.0.1/0.0.0.0/g' -e '/protected-mode/ c /protected-mode no'  /etc/redis/redis.conf &>> $logfile
-VALIDATE $? "EDITING REDIS CONF FILE"
+useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+VALIDATE $? "ADDING USER"
 
-systemctl enable redis &>> $logfile
-VALIDATE $? "ENABLING  REDIS"
+mkdir -p /app &>> $logfile
+VALIDATE $? "CREATING DIR"
+
+curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip 
+VALIDATE $? "DOWNLOADING CODE"
 
 
-systemctl start redis &>> $logfile
-VALIDATE $? "STARTING REDIS"
+cd /app &>> $logfile
+VALIDATE $? "CHANGING DIR"
+
+rm -rf /app/*  &>> $logfile
+VALIDATE $? "REMOVING OLDER FILES IF PRESENT"
+
+unzip /tmp/user.zip &>> $logfile
+VALIDATE $? "UNZIPPING..."
+
+npm install &>> $logfile
+VALIDATE $? "INSTALLING DEPENDENCIES"
+
+cp $SCRIPT_DIR/user.service /etc/systemd/system/user.service &>> $logfile
+VALIDATE $? "copying of user service file"
+
+systemctl daemon-reload &>> $logfile
+VALIDATE $? "reloading"
+
+systemctl enable user &>> $logfile
+VALIDATE $? "enabling user"
+
+systemctl start user &>> $logfile
+VALIDATE $? "STARTING USER"
+
 
 END_TIME=$(date +%S)
 
