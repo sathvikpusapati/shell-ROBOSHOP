@@ -78,8 +78,8 @@ VALIDATE $? "copying of dispatch service file"
 systemctl daemon-reload &>> $logfile
 VALIDATE $? "reloading "
 
-systemctl enable shipping &>> $logfile
+systemctl enable dispatch &>> $logfile
 
-systemctl start shipping &>> $logfile
-VALIDATE $? "starting shipping"
+systemctl start dispatch &>> $logfile
+VALIDATE $? "starting dispatch"
 
