@@ -20,7 +20,7 @@ logfile="$FOLDER/$log_NAME.log"
 
 START_TIME=$( date +%S)
 
-SCRIPT_DIR=$(pwd)
+SCRIPT_DIR=$pwd
 
 sudo mkdir -p $FOLDER
 
