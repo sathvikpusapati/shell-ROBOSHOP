@@ -19,7 +19,7 @@ sudo mkdir -p $FOLDER
 
 id=$(id -u)
 
-if [ id -ne 0 ]; then
+if [ $id -ne 0 ]; then
 
     echo -e "$R kindly provide root access to proceed $N"
     exit 1
