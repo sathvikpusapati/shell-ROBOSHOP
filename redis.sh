@@ -15,6 +15,8 @@ sudo mkdir -p $FOLDER
 
 id=$(id -u)
 
+START_TIME=$( date +%S)
+
 if [ $id -ne 0 ]; then
 
     echo -e "$R kindly provide root access to proceed $N"
@@ -49,3 +51,9 @@ VALIDATE $? "ENABLING  REDIS"
 
 systemctl start redis &>> $logfile
 VALIDATE $? "STARTING REDIS"
+
+END_TIME=$(date +%S)
+
+TOTAL_TIME=$(( $START_TIME-$END_TIME ))
+
+echo -e "SCRIPT EXECUTED IN $Y $TOTAL_TIME SECONDS $N" 
