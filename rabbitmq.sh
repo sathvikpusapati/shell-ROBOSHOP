@@ -20,6 +20,7 @@ logfile="$FOLDER/$log_NAME.log"
 
 START_TIME=$( date +%S)
 
+SCRIPT_DIR=$pwd
 
 sudo mkdir -p $FOLDER
 
@@ -40,17 +41,30 @@ VALIDATE()
     fi    
 }
 
-dnf install mysql-server -y &>> $logfile
-VALIDATE $? "INSTALLING MYSQL SERVER"
+cp $SCRIPT_DIR/rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo &>> $logfile
+VALIDATE $? "copying rabbitmq repo"
 
-systemctl enable mysqld &>> $logfile
-VALIDATE $? "ENABLE MYSQL SERVER"
+dnf install rabbitmq-server -y &>> $logfile
+VALIDATE $? "installing rabbitmq"
 
-systemctl start mysqld  &>> $logfile
-VALIDATE $? "STARTING MYSQL SERVER"
+systemctl enable rabbitmq-server
+VALIDATE $? "enabling  rabbitmq"
 
-mysql_secure_installation --set-root-pass RoboShop@1 &>> $logfile
-VALIDATE $? "SETTING PASSWORD"
+systemctl start rabbitmq-server
+VALIDATE $? "starting rabbitmq"
+
+
+if id roboshop ; then &>> $logfile
+
+    echo -e "ROBOSHOP USER ALREADY EXIST $Y SKIPPING...$N" | tee -a $logfile
+else
+
+    rabbitmqctl add_user roboshop roboshop123 &>> $logfile
+    VALIDATE $? "creatying roboshop user"
+
+    rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $logfile
+    VALIDATE $? "setting permission ton roboshop user "
+fi
 
 END_TIME=$(date +%S)
 
