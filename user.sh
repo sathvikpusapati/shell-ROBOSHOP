@@ -15,6 +15,8 @@ sudo mkdir -p $FOLDER
 
 id=$(id -u)
 
+SCRIPT_DIR=$(pwd)
+
 START_TIME=$( date +%S)
 
 if [ $id -ne 0 ]; then
@@ -64,7 +66,7 @@ VALIDATE $? "UNZIPPING..."
 npm install &>> $logfile
 VALIDATE $? "INSTALLING DEPENDENCIES"
 
-cp $SCRIPT_DIR/user.service /etc/systemd/system/user.service &>> $logfile
+cp $SCRIPT_DIR/user.service  /etc/systemd/system/user.service &>> $logfile
 VALIDATE $? "copying of user service file"
 
 systemctl daemon-reload &>> $logfile
