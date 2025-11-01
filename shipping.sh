@@ -103,6 +103,8 @@ else
 fi
 
 
+systemctl restart shipping
+VALIDATE $? "restarting shipping"
 
 END_TIME=$(date +%S)
 
