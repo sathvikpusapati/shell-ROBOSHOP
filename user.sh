@@ -33,14 +33,14 @@ VALIDATE()
 }
 
 
-dnf module disable redis -y &>> $logfile
-VALIDATE $? "DISABLING DEFAULT REDIS"
+dnf module disable nodejs -y &>> $logfile
+VALIDATE $? "DISABLING DEFAULT nodejs"
 
-dnf module enable redis:20 -y &>> $logfile
-VALIDATE $? "ENABLING  REDIS 20"
+dnf module enable nodejs:20 -y &>> $logfile
+VALIDATE $? "ENABLING  nodejs 20"
 
-dnf install redis -y &>> $logfile
-VALIDATE $? "INSTALLING REDIS"
+dnf install nodejs -y &>> $logfile
+VALIDATE $? "INSTALLING nodejs"
 
 useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
 VALIDATE $? "ADDING USER"
