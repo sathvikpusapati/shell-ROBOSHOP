@@ -72,7 +72,7 @@ systemctl daemon-reload &>> $logfile
 VALIDATE $? "reloading "
 
 systemctl enable payment &>> $logfile
-
+VALIDATE $? "enabling "
 systemctl start payment &>> $logfile
 VALIDATE $? "starting payment"
 
