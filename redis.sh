@@ -31,7 +31,7 @@ VALIDATE()
 }
 
 
-dnf module disdable redis -y
+dnf module disable redis -y
 VALIDATE $? "DISABLING DEFAULT REDIS"
 
 dnf module enable reedis:7 -y
