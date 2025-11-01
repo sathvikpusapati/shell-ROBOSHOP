@@ -1,7 +1,5 @@
 #!/bin/bash
-set -euo pipefail 
 
-trap 'echo "there is an error in line number : $LINENO and the command is $BASH_COMMAND"' ERR
 
 R="\e[31m"
 G="\e[32m"
@@ -54,17 +52,15 @@ systemctl start rabbitmq-server
 VALIDATE $? "starting rabbitmq"
 
 
-if id roboshop ; then &>> $logfile
 
-    echo -e "ROBOSHOP USER ALREADY EXIST $Y SKIPPING...$N" | tee -a $logfile
-else
+
 
     rabbitmqctl add_user roboshop roboshop123 &>> $logfile
     VALIDATE $? "creatying roboshop user"
 
     rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $logfile
     VALIDATE $? "setting permission ton roboshop user "
-fi
+
 
 END_TIME=$(date +%S)
 
