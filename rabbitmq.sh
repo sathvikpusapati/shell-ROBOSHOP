@@ -53,14 +53,17 @@ VALIDATE $? "starting rabbitmq"
 
 
 
+rabbitmqctl list_users | grep roboshop &>> $logfile
 
-
+if [ $? -ne 0 ]; then
     rabbitmqctl add_user roboshop roboshop123 &>> $logfile
     VALIDATE $? "creatying roboshop user"
 
     rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $logfile
     VALIDATE $? "setting permission ton roboshop user "
-
+else
+    echo -e "USER ALREADY THERE $Y SKIPPING $N" | tee -a $logfile
+fi
 
 END_TIME=$(date +%S)
 
